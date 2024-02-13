@@ -27,10 +27,8 @@ class Student(Base):
     birthday = Column(DateTime())
     enrolled_date = Column(DateTime(), default=datetime.now())
 
-    def __rep__(self):
-        return f"student {self.id}:"\
-            +f"{self.name},"\
-                +f"{self.grade}"
+    def __repr__(self):
+        return f"Student {self.id}: {self.name},Grade {self.grade}"
 
 if __name__ == '__main__':
     engine = create_engine('sqlite:///:memory:')
@@ -63,8 +61,84 @@ if __name__ == '__main__':
         ),
     )
     
+    # session.bulk_save_objects([albert_einstein, alan_turing])
+    # session.commit()
+    
+    # print(f"New student ID is {albert_einstein.id}")
+    # print(f"New student ID is {alan_turing.id}")
+    
     session.bulk_save_objects([albert_einstein, alan_turing])
     session.commit()
     
-    print(f"New student ID is {albert_einstein.id}")
-    print(f"New student ID is {alan_turing.id}")
+    # students = session.query(Student)
+
+    # print([student for student in students])
+    
+    # students=session.query(Student).all()
+    
+    # names = [name for name in session.query(Student.name)]
+
+    # print(names)
+    
+    # names=[student for student in session.query(
+    #     Student.name).order_by(Student.name)]
+    
+    # print(names)
+    
+    # Ordering
+    # students_by_grade_desc = [student for student in session.query(
+    #         Student.name, Student.grade).order_by(
+    #         desc(Student.grade))]
+
+    # print(students_by_grade_desc)
+    
+    # Limiting
+    # oldest_student = [student for student in session.query(
+    #         Student.name, Student.birthday).order_by(
+    #         desc(Student.grade)).limit(1)]
+
+    # print(oldest_student)
+    
+    # func
+    # student_count = session.query(func.count(Student.id)).first()
+
+    # print(student_count)
+    
+    # Filtering
+    # query = session.query(Student).filter(Student.name.like('%Albert%'),
+    #     Student.grade == 6)
+
+    # for record in query:
+    #     print(record.name)
+    
+    # Updating data
+    # for student in session.query(Student):
+    #     student.grade += 1
+
+    # session.commit()
+    
+    # session.query(Student).update({
+    #     Student.grade: Student.grade + 1
+    # })
+
+    # print([(student.name,
+    #     student.grade
+    #     ) for student in session.query(Student)])
+    
+    # Deleting
+    query = session.query(Student).filter(Student.name=="Albert Einstein")
+    
+    # albert_einstein = query.first()
+    
+    # session.delete(albert_einstein)
+    # session.commit()
+    
+    # albert_einstein = query.first()
+    
+    # print(albert_einstein)
+    
+    query.delete()
+
+    albert_einstein = query.first()
+
+    print(albert_einstein)
